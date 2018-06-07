@@ -77,8 +77,7 @@ function getInput() {
                                 if(err) throw err;
 
                                 console.log("Your order has been placed!");
-                                //showPrice(id, quantity);
-                                //checkSales();
+                                showPrice(id, quantity);
                             }
                         )
                     }
@@ -88,4 +87,13 @@ function getInput() {
     })
 }
 
-
+function showPrice(item, quantity){
+    connection.query("SELECT product_name, price FROM products WHERE id= ?",
+        [item],
+    function(err, res){
+        var price = quantity * res[0].price
+        if(err) throw err;
+        console.log("The total cost for your order of " + quantity + " " + res[0].product_name + "s is $" + price);
+        }
+    )
+}

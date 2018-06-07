@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
   //Create a callback function called that will call when the connection is established
   connection.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Welcome to the Bamazon User Interface powered by Node");
     loadProducts();
   });
 
@@ -31,25 +31,34 @@ function loadProducts(){
 //Define getinput function so that it enables the user to indicate what they would like by using inquirer088
 function getInput() {
     
-    inquirer.prompt([
-        {
-        type: "input",
-        name: "id",
-        message: "What is the ID of the item that you would you like to purchase?",
-        },
-        {
-        type: "input",
-        name: "quantity",
-        message: "How many units would you like to purchase?"
-        }
-    ])
-    .then(function(value){
-      var id = value.id;
-      var quantity = value.quantity;
-      console.log(id);
-      console.log(quantity);
-      //This thing right here. 
-      //connection.query("UPDATE products SET stock_quantity = stock_quantity -" + quantity + "WHERE id = " + id )
+    connection.query("SELECT * FROM products", function(err, res){
+        if(err) throw err;
+
+        inquirer.prompt([
+            {
+                name: "id",
+                message: "Please indicate the id of the product you would like to purchase...",
+                type: "input",
+                //validate that a number is entered
+                validate: function(value) {
+                
+                    return /^[0-9]+$/.test(value);
+                }
+            },
+            {
+                name: "quantity",
+                message: "How many units would you like?",
+                type: "input",
+                validate: function(value) {
+                
+                    return /^[0-9]+$/.test(value);
+                }
+            },
+        ]).then(function(answers){
+            var id = answers.id
+            var quantity= answers.quantity
+            console.log ("You want " + quantity + " of item number " + id);
+        })
     })
 }
 

@@ -58,7 +58,23 @@ function getInput() {
             var id = answers.id
             var quantity= answers.quantity
             console.log ("You want " + quantity + " of item number " + id);
+            //runOrder(id, quantity);
         })
     })
+}
+
+//create a function that takes user input and checks the supply of the database
+function runOrder(id, quantity){
+    //locate the item in the database
+    
+    //if the item does not exist, alert the user and ask them to try again
+    
+    //if the stock_quantity of the requested item is less than the amount requested
+        //alert the user "Sorry! Our inventory for this item is too low to complete your order."
+        //loadProducts();
+    
+    //else 
+        //1. decrement the requested amount from the database
+        //2. Inform the user that their order has been filled and what the final price is.
 }
 

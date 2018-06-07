@@ -58,23 +58,34 @@ function getInput() {
             var id = answers.id
             var quantity= answers.quantity
             console.log ("You want " + quantity + " of item number " + id);
-            //runOrder(id, quantity);
+            connection.query("SELECT stock_quantity FROM products WHERE id= ?",
+            id, 
+            function(err, res){
+                if(err) throw err;
+
+                if(quantity > res[0].stock_quantity){
+                    console.log("Sorry! Our inventory is too low!");
+                    console.log("Our current stock for that item is: " + res[0].stock_quantity)
+                    } else {
+
+                        connection.query("UPDATE products SET stock_quantity = ? WHERE id = ?",
+                            [
+                                res[0].stock_quantity - quantity,
+                                id
+                            ],
+                            function(err){
+                                if(err) throw err;
+
+                                console.log("Your order has been placed!");
+                                //showPrice(id, quantity);
+                                //checkSales();
+                            }
+                        )
+                    }
+                }
+            )
         })
     })
 }
 
-//create a function that takes user input and checks the supply of the database
-function runOrder(id, quantity){
-    //locate the item in the database
-    
-    //if the item does not exist, alert the user and ask them to try again
-    
-    //if the stock_quantity of the requested item is less than the amount requested
-        //alert the user "Sorry! Our inventory for this item is too low to complete your order."
-        //loadProducts();
-    
-    //else 
-        //1. decrement the requested amount from the database
-        //2. Inform the user that their order has been filled and what the final price is.
-}
 

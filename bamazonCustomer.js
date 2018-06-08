@@ -78,6 +78,7 @@ function getInput() {
 
                                 console.log("Your order has been placed!");
                                 showPrice(id, quantity);
+                                shopOrLeave();
                             }
                         )
                     }
@@ -93,7 +94,25 @@ function showPrice(item, quantity){
     function(err, res){
         var price = quantity * res[0].price
         if(err) throw err;
-        console.log("The total cost for your order of " + quantity + " " + res[0].product_name + "s is $" + price);
+        console.log("The total cost for your order of " + quantity + " " + res[0].product_name + "(s) is $" + price);
         }
     )
 }
+
+function shopOrLeave(){
+    inquirer.prompt([
+        {
+            name: "verify",
+            message: "Would you like to purchase something else?",
+            type: "confirm"
+        }
+    ]).then(function(answers){
+        if (answers.verify === true){
+            console.log("What else would you like to buy?");
+            loadProducts();
+        } else {
+            console.log("Thank you for your purchase! Enjoy your new stuff. Goodbye!")
+        }
+    });
+}
+
